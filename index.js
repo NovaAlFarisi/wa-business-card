@@ -1,11 +1,16 @@
 const express = require('express');
 const app = express();
-const expressLayouts = require('express-ejs-layouts');
-const path = require('path');
 const PORT = 3000;
 
 //ejs
 app.set('view engine','ejs');
+
+//json parser
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
+
+//static path
+app.use(express.static(__dirname + '/public'));
 
 //routes
 app.use('/', require('./routes/mainRoutes'));
