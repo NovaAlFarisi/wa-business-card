@@ -10,6 +10,6 @@ app.get('/login', (req,res)=>{
 });
 
 app.get('/register', (req,res)=>{
-    res.send('register page');
+    res.render('register');
 });
 module.exports = app;
