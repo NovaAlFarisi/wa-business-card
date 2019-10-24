@@ -1,5 +1,6 @@
 const db = require('../db/connection');
 const response = require('./helper/response');
+const jwt = require('jsonwebtoken');
 
 exports.get = (req,res) => {
     db.query("SELECT * FROM tb_users", (err, rows)=>{
@@ -12,7 +13,14 @@ exports.userAuth = (req,res) => {
     console.log(req);   
     db.query("SELECT * FROM tb_users WHERE email = ? AND password = ?", [email, password],(err,rows)=>{
        if(rows.length > 0 ){
-           response.ok(rows, res);
+           jwt.sign({email:email}, 'secretkey', (err,token)=>{
+               var userData = {
+                   email:rows[0].email,
+                   verified:rows[0].verified,
+                   userToken:token
+               }
+                response.ok(userData, res);
+           });
        } else {
            response.fail('Your account isn`t valid!', res);
        }
